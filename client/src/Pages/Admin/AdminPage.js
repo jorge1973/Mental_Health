@@ -10,6 +10,9 @@ const AdminPage = () => {
 	const handleClickAdd = () => {
 		return navigate("/AddProf");
 	};
+	const handleClickList = () => {
+		return navigate("/ListProf");
+	};
 	return (
 		<Wrapper>
 			<Title>Dashboard</Title>
@@ -17,7 +20,7 @@ const AdminPage = () => {
 				<FaRegAddressCard />
 				<span> Add Professional</span>
 			</Options>
-			<Options>
+			<Options onClick={handleClickList}>
 				<MdListAlt />
 				<span> List Professionals</span>
 			</Options>
@@ -47,12 +50,15 @@ const Wrapper = styled.div`
 const Options = styled.div`
 	font-size: 2.2em;
 	display: flex;
+	align-items: baseline;
+	width: 25%;
 	gap: 1em;
 	margin-bottom: 1em;
+
 	:hover {
 		color: yellow;
 		transition: 0.7s;
-		transform: scale(0.99);
+		transform: scale(0.95);
 		cursor: pointer;
 	}
 `;

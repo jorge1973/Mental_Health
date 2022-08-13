@@ -75,13 +75,14 @@ const A = styled.a`
 const Section = styled.section`
 	font-size: 1.1em;
 	font-family: var(--font-body);
-	width: 30%;
+	width: 25%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	height: 50%;
 	:hover {
 		transform: scale3d(1em 1em 15em 1em);
-		box-shadow: 1em 2em 3em 4em lightgray;
+		box-shadow: 1em 1em 5em 1em lightgray;
 	}
 `;
 const H3 = styled.h3`
@@ -89,7 +90,7 @@ const H3 = styled.h3`
 	margin-bottom: 1em;
 	margin-top: 0.5em;
 	font-weight: bold;
-	color: rgb(180, 8, 200);
+	color: rgb(80, 18, 200);
 `;
 
 const P = styled.p`

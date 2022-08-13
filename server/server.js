@@ -2,7 +2,12 @@
 const express = require("express");
 const morgan = require("morgan");
 const { allowedNodeEnvironmentFlags } = require("process");
-const { getListOfPro, addPro } = require("./handlers");
+const {
+	getListOfPro,
+	addPro,
+	getProfessionals,
+	getProfDetails,
+} = require("./handlers");
 const app = express();
 const PORT = 8000;
 
@@ -25,8 +30,8 @@ express()
 	// app.delete("/admin/deletepro", deletePro);
 
 	//Endpoint for Customers
-	// app.get("/pro/listpro", getProfessionals);
-	// app.get("/pro/listpro/:id", getProfDetails);
+	.get("/pro/listpro", getProfessionals)
+	.get("/pro/listpro/:id", getProfDetails)
 
 	.get("*", (req, res) => {
 		res.status(404).json({

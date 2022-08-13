@@ -3,17 +3,21 @@ import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
 import AdminPage from "../Admin/AdminPage";
+import SearchPage from "./SearchPage";
 
 export const Header = () => {
 	const navigate = useNavigate();
 	const handleAdminClick = () => {
 		return navigate("/AdminPage");
 	};
+	const handleSearchClick = () => {
+		return navigate("/Search");
+	};
 	return (
 		<Wrapper>
 			<Title to="/">Mental Health</Title>
 			<Search>
-				<DivSearch>
+				<DivSearch onClick={handleSearchClick}>
 					<BtnSearch>
 						<IoSearch />
 						<Span>Find a Therapist</Span>
@@ -43,8 +47,14 @@ const Title = styled(NavLink)`
 	font-size: 3em;
 	font-weight: bold;
 	text-decoration: none;
+	text-shadow: 2.2px 2.2px black;
 	color: white;
 	margin-left: 3em;
+	:hover {
+		color: lightgray;
+		transition: 0.5s;
+		transform: scale(1);
+	}
 `;
 const Customer = styled.button`
 	border-radius: 1em;
@@ -68,6 +78,8 @@ const Admin = styled.button`
 	:hover {
 		cursor: pointer;
 		transform: scale(1.1);
+		background-color: #d0d00d;
+		transition: 0.2s;
 	}
 `;
 

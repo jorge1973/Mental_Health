@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Addnew from "./images/undraw_writer_q06d.png";
 
 export const AddProf = () => {
 	const [formdata, setFormdata] = useState({
@@ -31,6 +32,18 @@ export const AddProf = () => {
 		const title = "Psychologist";
 		const desc = faker.lorem.paragraph();
 		const avatar = faker.image.avatar();
+		const issues = [
+			"Addiction",
+			"ADHD",
+			"Anxiety",
+			"Autism",
+			"Bipolar Disorder",
+			"Depression",
+			"Shyness",
+			"Personality",
+			"Sex",
+			"Relationships",
+		];
 
 		setFormdata({
 			...formdata,
@@ -45,6 +58,7 @@ export const AddProf = () => {
 			title,
 			desc,
 			avatar,
+			issues,
 		});
 	};
 	const handleOnChange = (e) => {
@@ -71,10 +85,12 @@ export const AddProf = () => {
 		<>
 			<Wrapper>
 				<Title>Add a New Professional</Title>
+				<Imagen>
+					<Img src={Addnew} alt="" />
+				</Imagen>
 				<WrapForm>
 					<Button onClick={GenerateData}>Generate Data</Button>
 					<Form id="form">
-						<label>Full Name:</label>
 						<Input
 							type="text"
 							id="fullName"
@@ -84,7 +100,7 @@ export const AddProf = () => {
 							value={formdata.fullname}
 							required
 						/>
-						<label>Address:</label>
+
 						<Input
 							type="text"
 							id="address"
@@ -94,7 +110,7 @@ export const AddProf = () => {
 							value={formdata.address}
 							required
 						/>
-						<label>City:</label>
+
 						<Input
 							type="text"
 							id="city"
@@ -104,7 +120,7 @@ export const AddProf = () => {
 							value={formdata.city}
 							required
 						/>
-						<label>Province:</label>
+
 						<Input
 							type="text"
 							id="province"
@@ -114,17 +130,17 @@ export const AddProf = () => {
 							value={formdata.state}
 							required
 						/>
-						<label>Country:</label>
+
 						<Input
 							type="text"
 							id="country"
 							name="country"
-							placeholder="country"
+							placeholder="Country"
 							onChange={(e) => handleOnChange(e)}
 							value={formdata.country}
 							required
 						/>
-						<label>Email:</label>
+
 						<Input
 							type="email"
 							id="email"
@@ -134,7 +150,7 @@ export const AddProf = () => {
 							value={formdata.email}
 							required
 						/>
-						<label>Phone:</label>
+
 						<Input
 							type="email"
 							id="phone"
@@ -144,7 +160,7 @@ export const AddProf = () => {
 							value={formdata.phone}
 							required
 						/>
-						<label>Permit No.:</label>
+
 						<Input
 							type="text"
 							id="permit"
@@ -154,7 +170,7 @@ export const AddProf = () => {
 							value={formdata.permit}
 							required
 						/>
-						<label>Title:</label>
+
 						<Input
 							type="text"
 							id="title"
@@ -164,7 +180,7 @@ export const AddProf = () => {
 							value={formdata.title}
 							required
 						/>
-						<label>Description:</label>
+
 						<Textarea
 							id="desc"
 							name="desc"
@@ -192,6 +208,18 @@ const Title = styled.div`
 	font-size: 2.5em;
 	margin-top: 1em;
 	margin-bottom: 1em;
+`;
+const Imagen = styled.div`
+	opacity: 0.3;
+	position: absolute;
+	right: 40em;
+	top: 18em;
+	width: 30%;
+	display: flex;
+	justify-content: center;
+`;
+const Img = styled.img`
+	width: 60%;
 `;
 
 const Wrapper = styled.div`
@@ -244,10 +272,19 @@ const Input = styled.input`
 	height: 2em;
 	border-radius: 0.5em;
 	margin-bottom: 0.5em;
+	background-color: lightgray;
+	color: blue;
+	::placeholder {
+		color: black;
+	}
 `;
 
 const Textarea = styled.textarea`
 	width: 32em;
 	height: 15em;
 	margin-bottom: 0.5em;
+	border-radius: 0.8em;
+	::placeholder {
+		color: black;
+	}
 `;

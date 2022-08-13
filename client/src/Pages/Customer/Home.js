@@ -23,9 +23,7 @@ const Img = styled.img`
 	width: 60em;
 `;
 const Wrapper = styled.div`
-	background: #56ccf2;
-	background: -webkit-linear-gradient(to right, #2f80ed, #56ccf2);
-	background: linear-gradient(to right, #0f80ed, #56ccf2);
+	background: linear-gradient(to right, #fffffd, #fffffa);
 `;
 const Image = styled.div`
 	display: flex;

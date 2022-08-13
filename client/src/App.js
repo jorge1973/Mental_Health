@@ -7,6 +7,9 @@ import { Home } from "./Pages/Customer/Home";
 import GlobalStyle from "./GlobalStyle";
 import AdminPage from "./Pages/Admin/AdminPage";
 import { AddProf } from "./Pages/Admin/AddProf";
+import SearchPage from "./Pages/Customer/SearchPage";
+import ListProf from "./Pages/Admin/ListProf";
+import ProfDetails from "./Pages/Customer/ProfDetails";
 const App = () => {
 	const { isAuthenticated } = useAuth0();
 	return (
@@ -17,6 +20,9 @@ const App = () => {
 					<Route exact path="/" element={<Home />} />
 					<Route exact path="/AdminPage" element={<AdminPage />} />
 					<Route exact path="/AddProf" element={<AddProf />} />
+					<Route exact path="/ListProf" element={<ListProf />} />
+					<Route exact path="/Search" element={<SearchPage />} />
+					<Route exact path="/proDetails/:id" element={<ProfDetails />} />
 					<Route path="">404: Oops!</Route>
 				</Routes>
 			</BrowserRouter>
