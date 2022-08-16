@@ -8,9 +8,12 @@ import {
 	IoMailUnreadOutline,
 	IoPhonePortraitOutline,
 } from "react-icons/io5";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 const ProfDetails = () => {
 	const pro_id = useParams().id;
-
+	const [startDate, setStartDate] = useState(new Date());
 	const [getdetail, setGetDetails] = useState(null);
 	useEffect(() => {
 		fetch(`/pro/listpro/${pro_id}`)
@@ -23,10 +26,24 @@ const ProfDetails = () => {
 			});
 	}, []);
 
+	const handleReserve = (e) => {
+		e.preventDefault();
+		console.log(e.target);
+
+		return (
+			<DatePicker
+				dateFormat="dd-MM-yyyy"
+				onChange={(date) => setStartDate(date)}
+				minDate={startDate}
+				filterDate={(date) => date.getDay() !== 6 && date.getDate() !== 0}
+			/>
+		);
+	};
+
 	if (!getdetail)
 		return (
 			<div>
-				<img src={gif} />{" "}
+				<img src={gif} alt="loading" />{" "}
 			</div>
 		);
 	return (
@@ -44,7 +61,9 @@ const ProfDetails = () => {
 					<Special>
 						<Span>Specialties:</Span> <span>{getdetail.issues.toString()}</span>
 					</Special>
-					<Per>Permit No: {getdetail.permit} OPQ</Per>
+					<Per>
+						Permit No: <Perm>{getdetail.permit} </Perm>OPQ
+					</Per>
 					<Contact>
 						<div>
 							<IoLocationOutline />{" "}
@@ -64,7 +83,13 @@ const ProfDetails = () => {
 				</Card>
 			</Data>
 
-			<Button>Reserve</Button>
+			<Button
+				onClick={(e) => {
+					handleReserve(e);
+				}}
+			>
+				Reserve
+			</Button>
 		</Wrapper>
 	);
 };
@@ -133,8 +158,14 @@ const Per = styled.div`
 	font-size: 1.1em;
 	width: 70%;
 	text-align: justify;
-	margin-left: 1em;
+	margin-left: 1.5em;
+	margin-top: 0.5em;
 	color: #000814;
+`;
+
+const Perm = styled.span`
+	font-weight: bold;
+	margin-left: 1.8em;
 `;
 
 const Spann = styled.span`
@@ -149,11 +180,11 @@ const Title = styled.div`
 `;
 
 const Foto = styled.img`
-	width: 8%;
+	width: 140px;
 	border-radius: 8em;
-	position: fixed;
-	top: 15em;
-	left: 38em;
+	position: absolute;
+	top: -2em;
+	left: -1em;
 `;
 
 const Name = styled.div`
@@ -171,11 +202,12 @@ const Card = styled.div`
 	border-radius: 1.8em 1.8em 1.8em 1.8em;
 	margin-top: 2em;
 	width: 34%;
-	height: 20em;
+	height: 25em;
 	flex-direction: column;
 	background-color: #ffd60a;
 	box-shadow: 0.5em 0.2em 1em 0em #f1e3d3;
 	margin-right: 2em;
+	position: relative;
 `;
 
 const Special = styled.div`
@@ -188,7 +220,7 @@ const Special = styled.div`
 `;
 
 const Span = styled.span`
-	margin-right: 0.5em;
+	margin-right: 1.5em;
 	font-size: 1.1em;
 	font-weight: bold;
 `;

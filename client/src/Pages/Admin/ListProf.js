@@ -29,19 +29,33 @@ const ListProf = () => {
 			<H1>List of Professionals</H1>
 			<div>
 				<Titles>
-					<Span>Full Name</Span>
-					<Span>Email</Span>
-					<Span>Country</Span>
-					<Span>Phone</Span>
+					<table>
+						<tr>
+							<th>
+								<Span>Full Name</Span>
+							</th>
+							<th>
+								<Span>Email</Span>
+							</th>
+							<th>
+								<Span>Country</Span>
+							</th>
+							<th>
+								<Span>Phone</Span>
+							</th>
+						</tr>
+					</table>
 				</Titles>
 				{getProf.map((prof) => {
 					return (
-						<Ul key={prof._id}>
-							<li>{prof.fullname}</li>
-							<li>{prof.email}</li>
-							<li>{prof.country}</li>
-							<li>{prof.phone}</li>
-						</Ul>
+						<table key={prof._id}>
+							<Tr>
+								<Td>{prof.fullname}</Td>
+								<Td>{prof.email}</Td>
+								<Td>{prof.country}</Td>
+								<Td>{prof.phone}</Td>
+							</Tr>
+						</table>
 					);
 				})}
 			</div>
@@ -63,28 +77,30 @@ const H1 = styled.h1`
 	margin-top: 1em;
 	margin-bottom: 0.5em;
 `;
-const Ul = styled.ul`
-	display: flex;
-	text-decoration: none;
-	color: white;
-	font-size: 1.1em;
-	padding: 1em;
-	justify-content: space-between;
-	align-items: baseline;
-	align-content: flex-start;
-`;
 
 const Span = styled.span`
 	color: yellow;
-	margin-right: 2em;
+	margin-right: 12em;
 `;
 const Titles = styled.div`
 	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
-	align-content: flex-start;
 	font-size: 1.3em;
-	margin-left: 1em;
+	margin-left: 3em;
+`;
+
+const Tr = styled.tr`
+	display: flex;
+	font-size: 1.1em;
+	color: white;
+	padding: 0.5em;
+	margin-left: 2em;
+	margin-top: 1em;
+`;
+
+const Td = styled.td`
+	display: flex;
+	width: 18em;
+	padding-left: 1em;
 `;
 
 const Loading = styled.div`

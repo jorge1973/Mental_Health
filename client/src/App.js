@@ -10,6 +10,9 @@ import { AddProf } from "./Pages/Admin/AddProf";
 import SearchPage from "./Pages/Customer/SearchPage";
 import ListProf from "./Pages/Admin/ListProf";
 import ProfDetails from "./Pages/Customer/ProfDetails";
+import UpdateProf from "./Pages/Admin/UpdateProf";
+import ModifyProf from "./Pages/Admin/ModifyProf";
+import Delete from "./Pages/Admin/Delete";
 const App = () => {
 	const { isAuthenticated } = useAuth0();
 	return (
@@ -23,6 +26,9 @@ const App = () => {
 					<Route exact path="/ListProf" element={<ListProf />} />
 					<Route exact path="/Search" element={<SearchPage />} />
 					<Route exact path="/proDetails/:id" element={<ProfDetails />} />
+					<Route exact path="/UpdateProf" element={<UpdateProf />} />
+					<Route exact path="/ModifyProf/:id" element={<ModifyProf />} />
+					<Route exact path="/DeleteProf/" element={<Delete />} />
 					<Route path="">404: Oops!</Route>
 				</Routes>
 			</BrowserRouter>

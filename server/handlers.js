@@ -12,6 +12,8 @@ const client = new MongoClient(MONGO_URI, options);
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
+//Admin fetch site
+//Get the list of all professsional in the DB
 const getListOfPro = async (req, res) => {
 	try {
 		await client.connect();
@@ -26,7 +28,7 @@ const getListOfPro = async (req, res) => {
 	client.close();
 	console.log("disconnected!");
 };
-
+//Add professionals to the DB
 const addPro = async (req, res) => {
 	try {
 		await client.connect();
@@ -37,6 +39,42 @@ const addPro = async (req, res) => {
 		res
 			.status(201)
 			.json({ status: 201, data: req.body, message: "Professional added." });
+	} catch (error) {
+		console.log(error);
+	}
+	client.close();
+	console.log("disconnected!");
+};
+
+const updatePro = async (req, res) => {
+	await client.connect();
+	const _id = req.params._id;
+	const db = client.db("Menthal_DB");
+	const hello = req.body.hello;
+	if (hello != undefined) {
+		const result = await db
+			.collection("professionals")
+			.updateOne({ _id }, { $set: { hello } });
+		res
+			.status(200)
+			.json({ status: 200, _id, result, message: "Professional updated" });
+	} else {
+		res.status(404).json({ status: 404, _id, data: " Not Found" });
+	}
+
+	client.close();
+	console.log("disconnected!");
+};
+
+const deletePro = async (req, res) => {
+	try {
+		await client.connect();
+		const _id = req.params._id;
+		const db = client.db("Menthal_DB");
+		const result = await db.collection("professionals").deleteOne({ _id });
+		result
+			? res.status(204).json({ status: 204, message: "Deleted!" })
+			: res.status(404).json({ status: 404, _id, data: "Not Found" });
 	} catch (error) {
 		console.log(error);
 	}
@@ -98,5 +136,12 @@ const getProfDetails = async (req, res) => {
 // 	console.log("disconnected!");
 // };
 
-module.exports = { addPro, getListOfPro, getProfessionals, getProfDetails };
+module.exports = {
+	addPro,
+	getListOfPro,
+	getProfessionals,
+	getProfDetails,
+	updatePro,
+	deletePro,
+};
 // batchImport();

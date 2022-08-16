@@ -32,7 +32,7 @@ const SearchPage = () => {
 	if (!getProf)
 		return (
 			<div>
-				<img src={gif} />{" "}
+				<img src={gif} alt="loading" />{" "}
 			</div>
 		);
 
@@ -120,6 +120,8 @@ const SubTitle = styled.div`
 	align-items: center;
 	font-size: 2em;
 	top: 5.5em;
+	font-weight: bold;
+	text-shadow: 0.02em 0.02em lightskyblue;
 `;
 
 const Form = styled.form`

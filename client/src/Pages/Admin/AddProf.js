@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Addnew from "./images/undraw_writer_q06d.png";
 
 export const AddProf = () => {
+	const [startDate, setStartDate] = useState();
+	const [appointment, setAppointment] = useState([]);
+
 	const [formdata, setFormdata] = useState({
 		fullname: "",
 		address: "",
@@ -20,6 +25,7 @@ export const AddProf = () => {
 		avatar: "",
 	});
 	const navigate = useNavigate();
+
 	const GenerateData = () => {
 		const fullname = faker.name.fullName();
 		const address = faker.address.streetAddress();
@@ -44,6 +50,7 @@ export const AddProf = () => {
 			"Sex",
 			"Relationships",
 		];
+		const appointment = [{ available: true, fecha: startDate }];
 
 		setFormdata({
 			...formdata,
@@ -59,12 +66,17 @@ export const AddProf = () => {
 			desc,
 			avatar,
 			issues,
+			appointment,
 		});
 	};
 	const handleOnChange = (e) => {
 		const { name, value } = e.target;
 		setFormdata({ ...formdata, [name]: value });
 	};
+
+	// const handleClickAdd = (startDate) => {
+	// 	// setAppointment([...appointment]);
+	// };
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -76,7 +88,7 @@ export const AddProf = () => {
 
 			body: JSON.stringify(newData),
 		});
-		const data = await fetching.json();
+
 		window.alert("Professional added");
 		navigate("/AdminPage");
 	};
@@ -189,6 +201,25 @@ export const AddProf = () => {
 							value={formdata.desc}
 							required
 						/>
+						<StyleDatePicker
+							selected={startDate}
+							onChange={(date) => {
+								setStartDate(date);
+							}}
+							isClearable
+							placeholderText="Select a date"
+							dateFormat="dd-MM-yyyy"
+							minDate={new Date()}
+							filterDate={(date) => date.getDay() !== 6 && date.getDate() !== 0}
+							showTimeSelect
+							timeFormat="HH:mm"
+							timeIntervals={60}
+							popperClassName="some-custom-class"
+							popperPlacement="top-end"
+						/>
+						{/* <Button onClick={handleClickAdd(startDate)}> */}
+						{/* Add another date
+						</Button> */}
 						<Button
 							id="boton"
 							onClick={(e) => {
@@ -247,13 +278,14 @@ const Form = styled.div`
 
 const Button = styled.button`
 	width: 8em;
-	height: 2em;
+	height: 2.2em;
 	border-radius: 0.5em;
 	border: none;
 	font-size: 1em;
 	color: #fffefd;
 	background-color: #0971c9;
 	margin-left: 10em;
+	margin-top: 1em;
 	:hover {
 		font-weight: bold;
 		transition: 0.5s;
@@ -261,9 +293,6 @@ const Button = styled.button`
 		cursor: pointer;
 		color: white;
 		background-color: #fd2350;
-	}
-	:disabled {
-		background-color: gray;
 	}
 `;
 
@@ -273,7 +302,18 @@ const Input = styled.input`
 	border-radius: 0.5em;
 	margin-bottom: 0.5em;
 	background-color: lightgray;
-	color: blue;
+	color: black;
+	font-weight: bold;
+	::placeholder {
+		color: black;
+	}
+`;
+
+const StyleDatePicker = styled(DatePicker)`
+	width: 32em;
+	border-radius: 0.5em;
+	height: 2em;
+	margin-bottom: 0.5em;
 	::placeholder {
 		color: black;
 	}
@@ -284,6 +324,7 @@ const Textarea = styled.textarea`
 	height: 15em;
 	margin-bottom: 0.5em;
 	border-radius: 0.8em;
+	font-weight: bold;
 	::placeholder {
 		color: black;
 	}

@@ -2,8 +2,6 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
-import AdminPage from "../Admin/AdminPage";
-import SearchPage from "./SearchPage";
 
 export const Header = () => {
 	const navigate = useNavigate();

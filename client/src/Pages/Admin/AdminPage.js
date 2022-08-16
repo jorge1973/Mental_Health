@@ -13,6 +13,13 @@ const AdminPage = () => {
 	const handleClickList = () => {
 		return navigate("/ListProf");
 	};
+	const handleClickUpdate = () => {
+		return navigate("/UpdateProf");
+	};
+
+	const handleClickDelete = () => {
+		return navigate("/DeleteProf");
+	};
 	return (
 		<Wrapper>
 			<Title>Dashboard</Title>
@@ -24,11 +31,11 @@ const AdminPage = () => {
 				<MdListAlt />
 				<span> List Professionals</span>
 			</Options>
-			<Options>
+			<Options onClick={handleClickUpdate}>
 				<MdSystemUpdateAlt />
 				<span> Update Professionals</span>
 			</Options>
-			<Options>
+			<Options onClick={handleClickDelete}>
 				<MdDeleteOutline />
 				<span> Delete Professionals</span>
 			</Options>
