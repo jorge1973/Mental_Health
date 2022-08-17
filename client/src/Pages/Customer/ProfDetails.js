@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Header } from "./Header";
+import { useAuth0 } from "@auth0/auth0-react";
 import gif from "./gif/opener-loading.gif";
 import {
 	IoLocationOutline,
@@ -10,11 +11,16 @@ import {
 } from "react-icons/io5";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Appointment from "./Appointment";
 
 const ProfDetails = () => {
+	const { isAuthenticated, isLoading, user } = useAuth0();
 	const pro_id = useParams().id;
 	const [startDate, setStartDate] = useState(new Date());
 	const [getdetail, setGetDetails] = useState(null);
+	const [showCalendar, setShowCalendar] = useState(false);
+	const [reserve, setReserve] = useState("Reserve");
+	const [appointment, setAppointment] = useState(false);
 	useEffect(() => {
 		fetch(`/pro/listpro/${pro_id}`)
 			.then((res) => res.json())
@@ -26,18 +32,14 @@ const ProfDetails = () => {
 			});
 	}, []);
 
-	const handleReserve = (e) => {
-		e.preventDefault();
-		console.log(e.target);
-
-		return (
-			<DatePicker
-				dateFormat="dd-MM-yyyy"
-				onChange={(date) => setStartDate(date)}
-				minDate={startDate}
-				filterDate={(date) => date.getDay() !== 6 && date.getDate() !== 0}
-			/>
-		);
+	const handleReserve = () => {
+		setShowCalendar(!showCalendar);
+		if (reserve === "Reserve") {
+			setReserve("Appointment");
+		} else {
+			setAppointment(!appointment);
+			setReserve("Reserve");
+		}
 	};
 
 	if (!getdetail)
@@ -46,6 +48,12 @@ const ProfDetails = () => {
 				<img src={gif} alt="loading" />{" "}
 			</div>
 		);
+
+	const app_Date = getdetail.appointment[0].fecha
+		.slice(0, 10)
+		.replaceAll("-", "/");
+	const app_DateTime = getdetail.appointment[0].fecha;
+
 	return (
 		<Wrapper>
 			<Header />
@@ -81,14 +89,28 @@ const ProfDetails = () => {
 						</div>
 					</Contact>
 				</Card>
+				<Calendar>
+					{showCalendar && (
+						<DatePicker
+							dateFormat="dd-MM-yyyy h:mm"
+							onChange={(date) => setStartDate(date)}
+							inline
+							minDate={new Date()}
+							filterDate={(date) => date.getDay() !== 6 && date.getDay() !== 0}
+							includeDates={[new Date(app_Date)]}
+						/>
+					)}
+				</Calendar>
 			</Data>
-
+			{appointment && <Appointment fecha={app_DateTime} />}
 			<Button
-				onClick={(e) => {
-					handleReserve(e);
-				}}
+				onClick={
+					isAuthenticated
+						? handleReserve
+						: window.alert("Please Login to reserve")
+				}
 			>
-				Reserve
+				{reserve}
 			</Button>
 		</Wrapper>
 	);
@@ -101,6 +123,12 @@ const Wrapper = styled.div`
 	background: linear-gradient(to right, #fffffd, #fffffa);
 `;
 
+const Calendar = styled.div`
+	right: 22em;
+	top: 20em;
+	position: absolute;
+`;
+
 const Button = styled.button`
 	background-color: #1b2430;
 	width: 10em;
@@ -108,7 +136,7 @@ const Button = styled.button`
 	border-radius: 1em;
 	color: white;
 	font-size: 1.2em;
-	margin-left: 44em;
+	margin-left: 43em;
 	margin-top: 1em;
 
 	:hover {

@@ -6,15 +6,13 @@ import { SearchProvider } from "./Context/SearchContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-	<React.StrictMode>
-		<Auth0Provider
-			domain="dev-z-z45c6x.us.auth0.com"
-			clientId="rCkZ8V8h5ILOqTL3uLrfaWtQ2LvWDksU"
-			redirectUri={window.location.origin}
-		>
-			<SearchProvider>
-				<App />
-			</SearchProvider>
-		</Auth0Provider>
-	</React.StrictMode>
+	<Auth0Provider
+		domain="dev-z-z45c6x.us.auth0.com"
+		clientId="rCkZ8V8h5ILOqTL3uLrfaWtQ2LvWDksU"
+		redirectUri={"http://localhost:3000"}
+	>
+		<SearchProvider>
+			<App />
+		</SearchProvider>
+	</Auth0Provider>
 );

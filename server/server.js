@@ -9,6 +9,8 @@ const {
 	getProfDetails,
 	updatePro,
 	deletePro,
+	addClient,
+	updateClient,
 } = require("./handlers");
 const app = express();
 const PORT = 8000;
@@ -28,12 +30,14 @@ express()
 	//Endpoint for UserAdmin to create,read,modify and delete professionals.
 	.get("/admin/listofpro", getListOfPro)
 	.post("/admin/addpro", addPro)
-	.patch("/admin/updatepro/:id", updatePro)
+	.patch("/admin/updatepro/:_id", updatePro)
 	.delete("/admin/deletepro/:_id", deletePro)
 
 	//Endpoint for Customers
 	.get("/pro/listpro", getProfessionals)
 	.get("/pro/listpro/:id", getProfDetails)
+	.post("/client/addclient", addClient)
+	.patch("/client/updateClient/:_id", updateClient)
 
 	.get("*", (req, res) => {
 		res.status(404).json({

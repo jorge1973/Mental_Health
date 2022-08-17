@@ -2,10 +2,31 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import gif from "./gif/opener-loading.gif";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const ModifyProf = () => {
+	const navigate = useNavigate();
 	const [getpromod, setProMod] = useState(null);
-	const [fullname, setFullName] = useState("");
+	const [state, setState] = useState({
+		fullname: "",
+		city: "",
+		address: "",
+		email: "",
+		country: "",
+		province: "",
+		phone: "",
+		title: "",
+		desc: "",
+	});
+	// const [fullname, setFullName] = useState("");
+	// const [city, setCity] = useState("");
+	// const [address, setAddress] = useState("");
+	// const [email, setEmail] = useState("");
+	// const [country, setCountry] = useState("");
+	// const [province, setProvince] = useState("");
+	// const [phone, setPhone] = useState("");
+	// const [title, setTitle] = useState("");
+	// const [desc, setDesc] = useState("");
 	const pro_id = useParams().id;
 	const [isDisabled, setIsDisabled] = useState(false);
 	useEffect(() => {
@@ -21,23 +42,21 @@ const ModifyProf = () => {
 
 	const handleOnChange = (e) => {
 		const { name, value } = e.target;
-		setFullName(e.target.value);
-		// setProMod({ ...getpromod, [name]: value });
+		setState({ ...state, [name]: value });
 	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// const newData = { ...getpromod };
+		const newData = { ...state };
+		console.log(pro_id);
+		const fetching = await fetch(`/admin/updatepro/${pro_id}`, {
+			method: "PATCH",
+			headers: { "Content-Type": "application/json" },
 
-		// const fetching = await fetch(`/admin/updatepro/${pro_id}`, {
-		// 	method: "PATCH",
-		// 	headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ formData: newData }),
+		});
 
-		// 	body: JSON.stringify(newData),
-		// });
-
-		// window.alert("Data modified");
-		// navigate("/AdminPage");
+		window.alert("Data modified");
+		navigate("/AdminPage");
 	};
 
 	if (!getpromod)
@@ -46,7 +65,7 @@ const ModifyProf = () => {
 				<img src={gif} alt="loading" />{" "}
 			</div>
 		);
-	console.log(fullname);
+
 	return (
 		<Wrapper>
 			<Title>Select the field to Modify</Title>
@@ -58,79 +77,79 @@ const ModifyProf = () => {
 						id="fullName"
 						name="fullname"
 						placeholder={getpromod.fullname}
-						onChange={(e) => handleOnChange(e)}
-						value={fullname}
+						onChange={handleOnChange}
+						value={state.fullname}
 						required
 					/>
 					<Input
 						type="text"
 						id="address"
 						name="address"
-						placeholder="Enter Address"
-						onChange={(e) => handleOnChange(e)}
-						value={getpromod.address}
+						placeholder={getpromod.address}
+						onChange={handleOnChange}
+						value={state.address}
 						required
 					/>
 					<Input
 						type="text"
 						id="city"
 						name="city"
-						placeholder="City"
-						onChange={(e) => handleOnChange(e)}
-						value={getpromod.city}
+						placeholder={getpromod.city}
+						onChange={handleOnChange}
+						value={state.city}
 						required
 					/>
 					<Input
 						type="text"
 						id="province"
 						name="province"
-						placeholder="Province"
-						onChange={(e) => handleOnChange(e)}
-						value={getpromod.state}
+						placeholder={getpromod.state}
+						onChange={handleOnChange}
+						value={state.province}
 						required
 					/>
 					<Input
 						type="text"
 						id="country"
 						name="country"
-						placeholder="Country"
-						onChange={(e) => handleOnChange(e)}
-						value={getpromod.country}
+						placeholder={getpromod.country}
+						onChange={handleOnChange}
+						value={state.country}
 						required
 					/>
 					<Input
 						type="email"
 						id="email"
 						name="email"
-						placeholder="Enter email"
-						onChange={(e) => handleOnChange(e)}
-						value={getpromod.email}
+						placeholder={getpromod.email}
+						onChange={handleOnChange}
+						value={state.email}
 						required
 					/>
 					<Input
-						type="email"
+						type="text"
 						id="phone"
 						name="phone"
-						placeholder="Phone number"
-						onChange={(e) => handleOnChange(e)}
-						value={getpromod.phone}
+						placeholder={getpromod.phone}
+						onChange={handleOnChange}
+						value={state.phone}
 						required
 					/>
 					<Input
 						type="text"
 						id="title"
 						name="title"
-						placeholder="Enter Title"
-						onChange={(e) => handleOnChange(e)}
-						value={getpromod.title}
+						placeholder={getpromod.title}
+						onChange={handleOnChange}
+						value={state.title}
 						required
 					/>
 					<Textarea
 						id="desc"
 						name="desc"
-						placeholder="Description"
-						onChange={(e) => handleOnChange(e)}
-						value={getpromod.desc}
+						placeholder={getpromod.desc}
+						onChange={handleOnChange}
+						value={state.desc}
 						required
 					/>
 					{/* //add calendar here */}

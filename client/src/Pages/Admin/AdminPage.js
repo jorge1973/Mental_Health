@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FaRegAddressCard } from "react-icons/fa";
 import { MdSystemUpdateAlt, MdDeleteOutline, MdListAlt } from "react-icons/md";
 import { AddProf } from "./AddProf";
+import { useAuth0 } from "@auth0/auth0-react";
+import { UserLogout } from "../../Components/UserLogout";
 
 const AdminPage = () => {
 	const navigate = useNavigate();
+
+	const { user, isAuthenticated, isLoading } = useAuth0();
+	useEffect(() => {
+		if (!isLoading) {
+			console.log(user);
+		}
+	}, [isLoading]);
 	const handleClickAdd = () => {
 		return navigate("/AddProf");
 	};
@@ -23,6 +32,14 @@ const AdminPage = () => {
 	return (
 		<Wrapper>
 			<Title>Dashboard</Title>
+			{isAuthenticated && (
+				<>
+					<User>
+						<h3>{user.name} is login</h3>
+					</User>
+					<UserLogout />
+				</>
+			)}
 			<Options onClick={handleClickAdd}>
 				<FaRegAddressCard />
 				<span> Add Professional</span>
@@ -42,6 +59,13 @@ const AdminPage = () => {
 		</Wrapper>
 	);
 };
+
+const User = styled.div`
+	position: absolute;
+	right: 1em;
+	top: 0.5em;
+	color: yellow;
+`;
 
 const Wrapper = styled.div`
 	display: flex;

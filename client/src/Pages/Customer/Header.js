@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
+import { useAuth0 } from "@auth0/auth0-react";
+import { UserLogout } from "../../Components/UserLogout";
 
 export const Header = () => {
 	const navigate = useNavigate();
+	const { loginWithRedirect } = useAuth0();
+	const { user, isAuthenticated, isLoading } = useAuth0();
+	console.log(isAuthenticated, user);
 	const handleAdminClick = () => {
-		return navigate("/AdminPage");
+		loginWithRedirect({ redirectUri: "http://localhost:3000/AdminPage" });
+	};
+	const handleCustomerClick = () => {
+		loginWithRedirect({ redirectUri: "http://localhost:3000/" });
 	};
 	const handleSearchClick = () => {
 		return navigate("/Search");
 	};
+	const [clientData, setClientData] = useState({
+		email: "",
+		appointment: "",
+	});
+
+	console.log(clientData);
+	useEffect(() => {
+		if (isAuthenticated) {
+			setClientData({ email: user.email });
+			console.log(clientData);
+			fetch("/client/addclient", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+
+				body: JSON.stringify(clientData),
+			});
+		}
+	}, []);
+
 	return (
 		<Wrapper>
 			<Title to="/">Mental Health</Title>
@@ -23,7 +50,12 @@ export const Header = () => {
 				</DivSearch>
 			</Search>
 			<Login>
-				<Customer>Customer/Login</Customer>
+				{isAuthenticated ? (
+					<UserLogout />
+				) : (
+					<Customer onClick={handleCustomerClick}>Customer/Login</Customer>
+				)}
+
 				<Admin onClick={handleAdminClick}>Admin/Login</Admin>
 			</Login>
 		</Wrapper>
@@ -63,6 +95,12 @@ const Customer = styled.button`
 	margin-right: 1em;
 	height: 2em;
 	font-weight: bold;
+	:hover {
+		cursor: pointer;
+		transform: scale(1.1);
+		background-color: #d0d00d;
+		transition: 0.2s;
+	}
 `;
 
 const Admin = styled.button`

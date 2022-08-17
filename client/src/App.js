@@ -1,7 +1,4 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { UserLogin } from "./Components/UserLogin";
-import { UserLogout } from "./Components/UserLogout";
-import { Profile } from "./Components/Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./Pages/Customer/Home";
 import GlobalStyle from "./GlobalStyle";
@@ -21,26 +18,18 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route exact path="/" element={<Home />} />
+					<Route exact path="/Search" element={<SearchPage />} />
+					<Route exact path="/ListProf" element={<ListProf />} />
+					<Route exact path="/proDetails/:id" element={<ProfDetails />} />
 					<Route exact path="/AdminPage" element={<AdminPage />} />
 					<Route exact path="/AddProf" element={<AddProf />} />
-					<Route exact path="/ListProf" element={<ListProf />} />
-					<Route exact path="/Search" element={<SearchPage />} />
-					<Route exact path="/proDetails/:id" element={<ProfDetails />} />
 					<Route exact path="/UpdateProf" element={<UpdateProf />} />
 					<Route exact path="/ModifyProf/:id" element={<ModifyProf />} />
 					<Route exact path="/DeleteProf/" element={<Delete />} />
+
 					<Route path="">404: Oops!</Route>
 				</Routes>
 			</BrowserRouter>
-			{/* <h1>We are Up..</h1>
-			{isAuthenticated ? (
-				<>
-					<Profile />
-					<UserLogout />
-				</>
-			) : (
-				<UserLogin />
-			)} */}
 		</>
 	);
 };

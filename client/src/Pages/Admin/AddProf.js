@@ -9,7 +9,6 @@ import Addnew from "./images/undraw_writer_q06d.png";
 
 export const AddProf = () => {
 	const [startDate, setStartDate] = useState();
-	const [appointment, setAppointment] = useState([]);
 
 	const [formdata, setFormdata] = useState({
 		fullname: "",
@@ -73,10 +72,6 @@ export const AddProf = () => {
 		const { name, value } = e.target;
 		setFormdata({ ...formdata, [name]: value });
 	};
-
-	// const handleClickAdd = (startDate) => {
-	// 	// setAppointment([...appointment]);
-	// };
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -208,18 +203,16 @@ export const AddProf = () => {
 							}}
 							isClearable
 							placeholderText="Select a date"
-							dateFormat="dd-MM-yyyy"
+							dateFormat="dd/MM/yyyy"
 							minDate={new Date()}
-							filterDate={(date) => date.getDay() !== 6 && date.getDate() !== 0}
+							filterDate={(date) => date.getDay() !== 6 && date.getDay() !== 0}
 							showTimeSelect
 							timeFormat="HH:mm"
 							timeIntervals={60}
 							popperClassName="some-custom-class"
 							popperPlacement="top-end"
 						/>
-						{/* <Button onClick={handleClickAdd(startDate)}> */}
-						{/* Add another date
-						</Button> */}
+
 						<Button
 							id="boton"
 							onClick={(e) => {

@@ -11,6 +11,7 @@ const options = {
 const client = new MongoClient(MONGO_URI, options);
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
+const { Console } = require("console");
 
 //Admin fetch site
 //Get the list of all professsional in the DB
@@ -47,19 +48,32 @@ const addPro = async (req, res) => {
 };
 
 const updatePro = async (req, res) => {
-	await client.connect();
-	const _id = req.params._id;
-	const db = client.db("Menthal_DB");
-	const hello = req.body.hello;
-	if (hello != undefined) {
+	try {
+		await client.connect();
+		const _id = req.params._id;
+		console.log(_id);
+		const db = client.db("Menthal_DB");
+		const { formData } = req.body;
+		if (!formData.fullname) delete formData.fullname;
+		if (!formData.email) delete formData.email;
+		if (!formData.province) delete formData.province;
+		if (!formData.address) delete formData.address;
+		if (!formData.country) delete formData.country;
+		if (!formData.phone) delete formData.phone;
+		if (!formData.permit) delete formData.permit;
+		if (!formData.title) delete formData.title;
+		if (!formData.desc) delete formData.desc;
+		if (!formData.city) delete formData.city;
+		console.log(formData);
+
 		const result = await db
 			.collection("professionals")
-			.updateOne({ _id }, { $set: { hello } });
+			.updateOne({ _id }, { $set: { ...formData } });
 		res
 			.status(200)
 			.json({ status: 200, _id, result, message: "Professional updated" });
-	} else {
-		res.status(404).json({ status: 404, _id, data: " Not Found" });
+	} catch (error) {
+		console.log(error);
 	}
 
 	client.close();
@@ -114,6 +128,51 @@ const getProfDetails = async (req, res) => {
 	console.log("disconnected!");
 };
 
+const addClient = async (req, res) => {
+	try {
+		await client.connect();
+		const cliInfo = { ...req.body, _id: uuidv4() };
+		const db = client.db("Menthal_DB");
+		const buscar = await db.collection("clients").findOne(cliInfo.email);
+		console.log(buscar);
+		if (buscar.email === cliInfo.email) {
+			res.status(302).json({ status: 302, message: "Client exist" });
+		} else {
+			const dbProf = await db.collection("clients").insertOne(cliInfo);
+			res
+				.status(201)
+				.json({ status: 201, data: req.body, message: "Customer added." });
+		}
+	} catch (error) {
+		console.log(error);
+	}
+	client.close();
+	console.log("disconnected!");
+};
+
+const updateClient = async (req, res) => {
+	try {
+		await client.connect();
+		const email = req.params.email;
+		console.log(email);
+		const db = client.db("Menthal_DB");
+		const clientData = req.body;
+		console.log(clientData);
+		const result_Client = await db
+			.collection("clients")
+			.updateOne({ _id }, { $set: { ...clientData } });
+
+		res
+			.status(200)
+			.json({ status: 200, _id, result_Client, message: "client updated" });
+	} catch (error) {
+		console.log(error);
+	}
+
+	client.close();
+	console.log("disconnected!");
+};
+
 //Use just one time to create Admin user
 // const batchImport = async () => {
 // 	const client = new MongoClient(MONGO_URI, options);
@@ -123,7 +182,7 @@ const getProfDetails = async (req, res) => {
 // 		const hashedPassword = await bcrypt.hash("", salt);
 // 		await client.connect();
 // 		const db = client.db("Menthal_DB");
-// 		await db.collection("users").insertOne({
+// 		await db.collection("clients").insertOne({
 // 			_id: _id,
 // 			userType: "Administrator",
 // 			email: "jediazf@protonmail.com",
@@ -143,5 +202,7 @@ module.exports = {
 	getProfDetails,
 	updatePro,
 	deletePro,
+	addClient,
+	updateClient,
 };
 // batchImport();
