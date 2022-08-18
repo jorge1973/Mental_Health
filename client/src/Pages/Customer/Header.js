@@ -29,7 +29,7 @@ export const Header = () => {
 		if (isAuthenticated) {
 			setClientData({ email: user.email });
 			console.log(clientData);
-			fetch("/client/addclient", {
+			fetch(`/client/addclient/${user.email}`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 

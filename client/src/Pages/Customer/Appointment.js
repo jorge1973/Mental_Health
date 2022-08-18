@@ -1,16 +1,32 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+
 const Appointment = (props) => {
 	const navigate = useNavigate();
+	console.log(props);
+
 	const handleClick = () => {
-		navigate("/");
+		if (props?.fecha) {
+			const removing = fetch(`/admin/deleteAppointment/${props.profData._id}`, {
+				method: "PATCH",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ ...props.profData }),
+			});
+
+			const updating = fetch(`/client/updateClient/${props.email}`, {
+				method: "PATCH",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ email: props.email, appointment: props?.fecha }),
+			});
+			navigate("/");
+		}
 	};
-	console.log();
+
 	const appFecha = JSON.stringify(props.fecha);
-	console.log(appFecha);
-	const fecha = appFecha.slice(1, 11);
-	const hora = appFecha.slice(12, 17);
+	const fecha = appFecha?.slice(1, 11);
+	const hora = appFecha?.slice(12, 17);
+
 	return (
 		<Wrapper>
 			<Title>Reservation/Appointment added</Title>
@@ -28,7 +44,8 @@ const Wrapper = styled.div`
 	width: 43em;
 	height: 35em;
 	background-color: #ffd60a;
-	border: 1px solid red;
+	box-shadow: 1em 1em 4em 1em lightgrey;
+	border: none;
 	border-radius: 1.5em;
 	position: absolute;
 	top: 15em;

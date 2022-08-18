@@ -46,7 +46,7 @@ const addPro = async (req, res) => {
 	client.close();
 	console.log("disconnected!");
 };
-
+//Update proffesionals
 const updatePro = async (req, res) => {
 	try {
 		await client.connect();
@@ -79,7 +79,7 @@ const updatePro = async (req, res) => {
 	client.close();
 	console.log("disconnected!");
 };
-
+//delete proffesionals
 const deletePro = async (req, res) => {
 	try {
 		await client.connect();
@@ -92,6 +92,29 @@ const deletePro = async (req, res) => {
 	} catch (error) {
 		console.log(error);
 	}
+	client.close();
+	console.log("disconnected!");
+};
+//remove appointment from professionals
+const deleteAppointment = async (req, res) => {
+	try {
+		await client.connect();
+		const _id = req.body._id;
+		const db = client.db("Menthal_DB");
+		// const profData = req.body;
+		console.log(_id);
+		const buscar = await db.collection("professionals").findOne({ _id });
+		delete buscar.appointment;
+		console.log("este es buscar", buscar);
+		const result = await db
+			.collection("professionals")
+			.updateOne({ _id: buscar._id }, { $set: { ...buscar, appointment: [] } });
+
+		res.status(200).json({ status: 200, message: "professional updated" });
+	} catch (error) {
+		console.log(error);
+	}
+
 	client.close();
 	console.log("disconnected!");
 };
@@ -131,13 +154,15 @@ const getProfDetails = async (req, res) => {
 const addClient = async (req, res) => {
 	try {
 		await client.connect();
-		const cliInfo = { ...req.body, _id: uuidv4() };
+		const email = req.params.email;
+
 		const db = client.db("Menthal_DB");
-		const buscar = await db.collection("clients").findOne(cliInfo.email);
-		console.log(buscar);
-		if (buscar.email === cliInfo.email) {
+		const buscar = await db.collection("clients").findOne({ email });
+
+		if (buscar.email === email) {
 			res.status(302).json({ status: 302, message: "Client exist" });
 		} else {
+			const cliInfo = { ...req.body, _id: uuidv4(), email };
 			const dbProf = await db.collection("clients").insertOne(cliInfo);
 			res
 				.status(201)
@@ -146,31 +171,32 @@ const addClient = async (req, res) => {
 	} catch (error) {
 		console.log(error);
 	}
-	client.close();
-	console.log("disconnected!");
+	// client.close();
+	// console.log("disconnected!");
 };
 
 const updateClient = async (req, res) => {
 	try {
 		await client.connect();
 		const email = req.params.email;
-		console.log(email);
 		const db = client.db("Menthal_DB");
 		const clientData = req.body;
-		console.log(clientData);
+
+		const buscar = await db.collection("clients").findOne({ email });
+
 		const result_Client = await db
 			.collection("clients")
-			.updateOne({ _id }, { $set: { ...clientData } });
+			.updateOne({ _id: buscar._id }, { $set: { ...clientData } });
 
 		res
 			.status(200)
-			.json({ status: 200, _id, result_Client, message: "client updated" });
+			.json({ status: 200, result_Client, message: "client updated" });
 	} catch (error) {
 		console.log(error);
 	}
 
-	client.close();
-	console.log("disconnected!");
+	// client.close();
+	// console.log("disconnected!");
 };
 
 //Use just one time to create Admin user
@@ -204,5 +230,6 @@ module.exports = {
 	deletePro,
 	addClient,
 	updateClient,
+	deleteAppointment,
 };
 // batchImport();

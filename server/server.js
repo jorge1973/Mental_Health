@@ -11,6 +11,7 @@ const {
 	deletePro,
 	addClient,
 	updateClient,
+	deleteAppointment,
 } = require("./handlers");
 const app = express();
 const PORT = 8000;
@@ -32,12 +33,13 @@ express()
 	.post("/admin/addpro", addPro)
 	.patch("/admin/updatepro/:_id", updatePro)
 	.delete("/admin/deletepro/:_id", deletePro)
+	.patch("/admin/deleteAppointment/:_id", deleteAppointment)
 
 	//Endpoint for Customers
 	.get("/pro/listpro", getProfessionals)
 	.get("/pro/listpro/:id", getProfDetails)
-	.post("/client/addclient", addClient)
-	.patch("/client/updateClient/:_id", updateClient)
+	.post("/client/addclient/:email", addClient)
+	.patch("/client/updateClient/:email", updateClient)
 
 	.get("*", (req, res) => {
 		res.status(404).json({

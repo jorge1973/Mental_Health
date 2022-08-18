@@ -49,10 +49,10 @@ const ProfDetails = () => {
 			</div>
 		);
 
-	const app_Date = getdetail.appointment[0].fecha
+	const app_Date = getdetail?.appointment[0]?.fecha
 		.slice(0, 10)
 		.replaceAll("-", "/");
-	const app_DateTime = getdetail.appointment[0].fecha;
+	const app_DateTime = getdetail?.appointment[0]?.fecha;
 
 	return (
 		<Wrapper>
@@ -95,22 +95,29 @@ const ProfDetails = () => {
 							dateFormat="dd-MM-yyyy h:mm"
 							onChange={(date) => setStartDate(date)}
 							inline
-							minDate={new Date()}
+							minDate={new Date(app_Date)}
 							filterDate={(date) => date.getDay() !== 6 && date.getDay() !== 0}
 							includeDates={[new Date(app_Date)]}
 						/>
 					)}
 				</Calendar>
 			</Data>
-			{appointment && <Appointment fecha={app_DateTime} />}
+			{appointment && (
+				<Appointment
+					fecha={app_DateTime}
+					profData={getdetail}
+					email={user.email}
+				/>
+			)}
 			<Button
 				onClick={
 					isAuthenticated
 						? handleReserve
 						: window.alert("Please Login to reserve")
 				}
+				disabled={!app_Date}
 			>
-				{reserve}
+				{app_Date ? reserve : "Not Available"}
 			</Button>
 		</Wrapper>
 	);
